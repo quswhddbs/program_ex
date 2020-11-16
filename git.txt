@@ -1,0 +1,343 @@
+- 설치주소
+https://git-scm.com/
+설치중 Use Windows' default console window (윈도우 명령 프롬프트 창 사용한다는 뜻) 
+부분 빼고 모두 next 
+
+윈도우 검색창에서 git 검색한후 git bash 선택 
+git 창이 열린 후 git 이라는 명령어를 치면 사용가능한 여러 옵션이 표시된다.
+
+- git 환경설정 
+사용전 먼저 사용자 정보를 입력해야 한다. 
+사용자 정보를 설정하려면 git config 명령사용 , 여기에 --global 옵션을 추가하면
+현재 컴퓨터에 있는 모든 저장소에서 같은 사용자 정보를 사용하도록 설정한다. 
+사용자 이름과 메일 주소를 저장한다. 
+git config --global user.name "jyp"
+git config --global user.email "quswhddbs85@gmail.com"
+ 
+- 빔에서 텍스트 문서 만들기 
+설치시 vim 을 사용하도록 설치 하였기 때문에 
+vim 의 기본적인 방법을 익혀야 한다. 
+
+- git 저장소 만들기 
+mkdir hello-git
+cd hello-git
+저장소를 만들고 싶은 위치에 폴더를 만들어 주고 
+git init 
+명령어를 입력하면 디렉터리를 초기화하며 , 해당 디렉터리에서 깃을 사용할수 있다.
+ls -al 를 실행해 보면 git 이라는 폴더가 생성된걸 볼수 있다. (숨김파일)
+
+- 작업 트리에서 vim 으로 문서 수정하기 
+hello-git 폴더를 초기화했기 때문에 버전 관리를 할 수 있다. 
+git status 명령어를 통해 상태확인
+vim hello.txt 파일 생성 
+git status 명령어를 실행하면 Untracked files 를 볼수 있다. 아직 한번도 버전 관리하지않은 파일을 말한다. 
+
+- 수정한 파일 스테이징 하기 
+작업트리에서 파일을 만들거나 수정했다면 스테이지에 수정한 파일을 추가한다. 
+명령어는 git add hello.txt 와 같다. 
+git status 를 보면 
+Changes to be committed 라는 문구로 변경된것을 볼수 있다. 그리고 hello 파일 앞에 new file 이라는 수식어가 추가로 나타난다. 
+
+- 스테이지에 올라온 파일 커밋하기 
+커밋 명령은 
+git commit -m "message1" 
+다시 git status 를 입력해 보면 작업트리는 수정사항 없이 clean 돼 있다. 
+제대로 만들어 졌는지 확인할때는 
+git log 입력한다. 
+
+- 스테이징과 커밋 한꺼번에 처리하기 - git commit -am
+commit 명령에 -am 옵션을 사용하면 스테이지에 올리고 , 커밋하는 과정을 한번에 처리할수 있다. 
+이 방법은 한번이라도 커밋한 적이 있는 파일을 다시 커밋할 때만 사용할수 있다.
+파일 수정후 
+git commit -am "message2" 해본다. 
+
+- 변경사항 확인하기 
+- git diff 를 사용하면 기존의 내용과 변경된 내용을 확인할수 있다. 
+현 수정한 내용의 차이점 보여줌 
+
+- tracked 파일과 untracked 파일 
+한번이라도 커밋을하면 추적을하고 있기 때문에 tracked
+새로만든 파일은 추적을하지 않기 때문에 untracked 상태이다. 
+
+- 커밋에 관련된 파일까지 함께 살펴보려면 git log --stat 명령어사용
+보통 log 정보에 파일 정보까지는 보이지 않는다. 위와같이 해야한다. 
+
+- 버전 관리에서 제외하기 
+.gitgnore 파일 만들어서 제외할수 있다. 
+
+- 최근커밋내용 메시지 수정하기 
+git commit --amend 
+
+- 작업 되돌리기 
+- 작업트리에서 수정한 파일 되돌리기 
+git checkout
+ex) git checkout -- hello.txt
+
+- 스테이징 되돌리기 (취소하기)
+git add hello2.txt
+git log --stat
+git reset HEAD hello2.txt (되돌리기)
+
+- 최신 커밋 되돌리기 
+커밋까지 했을때 가장 마지막에 한 커밋 취소하기 
+git commit -am "message4"
+git reset HEAD^ - HEAD^ 는 브랜치의 최신 커밋을 가르킨다.
+
+--soft HEAD^ : 최근 커밋을 하기 전 상태로 작업 트리 되돌리기 
+--mixed HEAD^ : 최근 커밋과 스테이징 하기 전 상태로 작업 트리 돌리기 , 옵션 없이 사용할 경우 이옵션이 기본적용
+--hard HEAD^ : 최근 커밋과 스테이징 , 파일 수정 하기전 상태로 작업 트리 돌린다. 되돌린 내용은 복구불가 
+
+- 특정 커밋으로 되돌리기 
+git log 를 통해 커밋 아이디를 알아내서 
+git reset --hard 1eafdf53b05172256f4ed1e854bab9da57ea062b 
+와 같이하면 위의 버전위로는 삭제되고 , 최신법전이 돼 있으며 , 파일또한 원복돼 있다. 
+
+- 커밋 삭제하지 않고 되돌리기 
+reset 의 경우는 되돌아갈 해시를 지정하고 , revert 는 최소할 커밋 헤시를 지정한다. 
+취소할 commit 을 선택하면 된다. 삭제되지 않고 , 커밋전으로 돌아간다. 
+git revert 068dafe7901d13fec1e82f7d68275bdb1dab2ada 
+하면 문서가 뜬다. 거기에 추가로 남길 내용을 작성할수 있다. 
+기존의 커밋을 삭제하는것이 아니라 , 변경전의 새로운 커밋이 생성되는 것 이다. 
+
+- 새 브랜치 만들기 
+git branch (현재 브랜치 확인)
+git branch apple (브랜치 생성)
+git log 를 확인해 보면 , master 과 apple 의 2개의 브랜치가 있고 , 현재까지는 공통 커밋상태이다. 
+git branch google
+git branch ms
+여러개의 브랜치를 만든후 master 브랜치에서 파일수정후 커밋을 하면 
+log 를 보면 master 브랜치만 commit 이 된걸 볼수 있다. 
+
+- 다른 브랜치로 이동 
+git checkout apple 
+git log 를 통해보면 apple 의 최근 커밋정보를 볼수있다.
+
+- 새 브랜치에서 커밋하기 
+apple 브랜치에서 파일수정 
+apple.txt 파일만들어 내용추가 
+git add . (현재 저장소에서 수정된 파일 한꺼번에 스테이지에 올린다.)
+git commit -m "content 4"
+
+git log --oneline --branches (어떤 저장소에서 만든 커밋인지 확인 가능하다.)
+git log --oneline --branches --graph(커밋의 부모를 표시해준다.)
+
+- 브랜치 사이의 차이점 알아보기 
+git log master..apple (왼족이 기준이 된다.)
+
+- 브랜치 병합하기 
+- 서로다른 파일 병합 
+git init maunal-2 (디렉터리 만들고 , 저장소 초기화 한번에)
+vi work.txt
+git add work.txt
+git commit -m "work 1"
+git branch o2
+master 브랜치에서 master.txt 작성후 커밋 , 
+git commit -m "master work 2"
+git checkout o2
+vi o2.txt 
+git add . 
+git commit -m "o2 work 2"
+git log --oneline --branches --graph
+
+-o2 브랜치의 내용을 master 브랜치로 병합 
+git checkout master
+git merge o2 (master 에 o2 병합)
+git log --oneline --branches --graph
+
+- 같은 문서의 다른 위치 수정시 병합 
+다른 브랜치의 같은 파일을 수정후 병합 테스트 
+git init maunal-3
+파일만들기 
+git add .
+git commit -m "work 1"
+git branch o2
+master 에서 파일 수정후 커밋 
+git commit -am "master work 2"
+o2 스위치 후 파일 수정후 커밋 
+git commit -am "o2 work 2"
+git checkout master
+master 의 파일의 다른 부분이 병합된걸 볼수 있다. 
+
+- 같은문서의 같은 위치 수정시 병합
+같은 부분을 수정하면 충돌이라는 메시지가 나오면서 , 각자의 이상내용을 파일에 표시하면서 병합된다. 
+현업프로젝트에서는 브랜치 병합자동처리해주는 프로그램을 많이 사용한다. 
+
+- 병합 끝난 브랜치 삭제하기 
+master 에서 삭제해야한다. 
+git branch -d o2 
+다시 같은 이름으로 브랜치를 만들면 전에 작업했던 내용이 그대로 남아있다. 
+삭제라기 보다는 깃의 흐름 속에서 감추는 것이다. 
+
+- 서로다른 브랜치에서 reset 
+다른 브랜치에서도 reset 으로 브랜치 commit 변경이 가능하다. 
+
+- 수정중인 파일 감추기 및 되돌기기
+수정중인 파일을 잠깐 숨겨놓는기능 
+아래의 명령은 tracked 상태여야 가능하다.
+git stash 
+git status 를 입력해도 별다른 메시지가 뜨지 않는다. (숨겨짐)
+git stash list (숨김파일 목록)
+git stash pop (숨김파일 되돌리기)
+
+------- 깃허브로 백업하기
+- 지역 저장소를 원격 저장소에 연결하기
+git init loc-git
+파일 만들고 
+git add .
+git commit -m "add a"
+깃허브 페이지에서 주소 복사후 
+git remote add origin https://github.com/quswhddbs/github.git
+이 명령어는 원격 저장소에 origin을 추가 하겠다고 깃에게 알려주는것이다. 
+여기서 origin은 깃허브 저장소 주소를 가리킨다. 깃허브 저장소 주소를 그대로 쓰면 너무 길기 때문에
+origin (httpsL// ... ) 으로 줄여서 remote 추가하는 것이다. 
+* 깃에서 기본 브랜치를 master 라고 하는것처럼 기본 원격 저장소에는 origin 이라는 이름을 사용한다.
+git remote -v 를 통해 제대로 연결됐는지 확인 
+
+- 원격 저장소에 올리기 및 내려받기 
+지역저장소 -> 원격저장소 : push 
+원격저장소 -> 지역저장소 : pull 
+
+지역저장소의 origin 저장소의 master 브랜치로 푸시하라는 명령
+git push -u origin master
+-u 같은 경우는 지역저장소와 원격저장소를 연결하기 위한 것으로 처음에 한번만 사용하면 된다. 
+
+한번이라도 연결한 후에는 쉽게 푸시할 수 있다. 
+파일 수정 후 git push 를 하면 바로 push 된걸 볼 수 있다. 
+
+- 깃허브 사이트에서 직접 커밋하기
+사이트에서 파일을 만들어준후 
+git pull origin master 
+
+- 깃허브에 SSH 원격 접속하기 
+- SSH 키 생성하기 
+ssh-keygen
+두번더 엔터키 입력 
+Your identification has been saved in /c/Users/JYP/.ssh/id_rsa (프라이빗 키 경로)
+Your public key has been saved in /c/Users/JYP/.ssh/id_rsa.pub (퍼블릭 키 경로)
+
+- 깃허브에 퍼블릭 키 전송하기 
+cd .ssh
+cat id_rsa.pub
+퍼블릭 키 복수 후 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1wk51OlBFOM1P9uqlXrWto5N21MqLLOX0UEl6dnNvQbkrjHAt3YaKYM87iX0kYjHnV8eTs2zfG0DuuDPZP1dOSzzjkWzPj2QDlJViuqu1vXPA4AhGk3Kw4s2s0FdcyF4+NuHFFasDSjj9j95yKOJ+CdOsL33QENPrUnRxe5k58uGBc/UEaoPlOOipMri27ZjL/4OVjHD4mmMYSLXtrCOCqdJ0etTJOyOtWqyT+sEMpqyhwXN4OsL53QRxo68Yt7EoyAFu8hgkP3Hy1a01ARBIW0HnmP0bKZzPl32UrWFv23bO+H247Q+3+8ojRg0M7X+JF1AEAKzthNq+kE1cRaoNT/6lD9uuV0Vnv7Sv8ulq3cCp28Ce5no9aQYsKXseKALqXBQWePhAu3LVYEdrRdvnWO1lGHaB5eXWbMqD1CHBXdWe6gQw7zQux+v7D1x3BXLOqXkPAvNN/c7DO5Za+lECNAuef9oUHAwoHjiS/Cj07yWxmMqEaLYn55Rjs2REhn0= JYP@DESKTOP-P75JHOK
+깃허브 접속후 로근인 -> settings -> SSH and GPG keys -> New SSH key
+
+- SSH 주소로 원격 저장소 연결하기 
+지역저장소와 원격 저장소 연결 
+사이트로가서 New repository 선택 후 새로운 저장소 만들기 
+SSH 방식으로 접근할것 체크 , SSH 주소 복사 , 
+새로운 지역저장소 만들고 연결해보기 
+git init connect-ssh
+cd connect-ssh
+git remote add origin git@github.com:quswhddbs/connect-ssh.git (복사한 주소)
+git remote -v (연결확인)
+
+- 깃허브로 협업하기 
+- 여러컴퓨터에서 원격 저장소 함께 사용하기 
+혼자서 여러개의 컴퓨터로 버전을 관리할경우 
+- 원격저장소 복제하기 
+원격저장소를 기존에 연결된 지역 저장소 외에 다른 지역 저장소에서 사용하려면 원격 저장소에 담긴 내용 전체를 지역 저장소로 가져와야 한다. 
+깃허브 사이트로가서 복제할 저장소의 clone or download 누른 후 복사한다. 
+git bash 에서 
+git clone https://github.com/quswhddbs/github.git git_home
+git clone https://github.com/quswhddbs/github.git git_office
+위와같이 하면 자동으로 폴더가 만들어진다. 들어가서 git log 를 보면 히스토리까지 복제된걸 볼수있다.
+위와같이 복제를 하면 지역 자장소와 원격 저장소가 자동으로 연결된다. 
+git remote -v 를 통해확인 
+
+- 개인 컴퓨터에서 작업하고 올리기 - 회사 컴퓨터에서 내려받아 작업하기 
+git_home 에서 파일 수정후 push 를 한다. 
+git_office 이동 후 git pull 한다. 
+확인해 보면 수정된 파일이 pull 된것을 볼수 있다. 
+
+- 원격 브랜치 정보 가져오기 
+최신 커밋을 합기지 전 원격 저장소에 어떤 변화가 있는지 살펴봐야 하낟. 이럴때는 브랜치의 정보만 먼저 가지고 올수 있다.
+- 원갹 master 브랜치 
+지역 저장소 처럼 원격 저장소도 만들때 기본적으로 master 브랜치가 생성된다. 
+git log 를 통해 (HEAD -> master, origin/master, origin/HEAD) 등의 정보를 확인할수 있다. 
+
+- 원격 브랜치 정보 가지고 오기 
+git fetch 명령은 소스의 변화없이 원격 브랜치의 변화 정보만 가지고 온다. 
+패치로 가지고온 최신 커밋 정보는 origin/master 브랜치가 아닌 FETCH_HEAD 라는 브랜치로 가지고온다. 
+-지역저장소의 최신 커밋과 패치한 커밋의 차이를 비교하려면 git diff HEAD origin/master 입력 
+-페치해서 가지고온 최신 커밋을 보고 싶다면 
+git checkout FETCH_HEAD (브랜치 이동)
+패이한 최신 커밋을 브랜치에 합치려면 git pull 또는 git merge FETCH_HEAD 를 통해 병합도 가능 
+- git fetch + git merge FETCH_HEAD = git pull  과 같다. 
+
+
+-- 협업의 기본 
+- 공동작업자 추가 
+settings -> Manage access 통해 협업자 추가 
+
+- 새로 만든 브랜치 푸시하기 
+git checkout -b f (브랜치를 만들고 체크아웃까지 한번에)
+변경된 프랜티에서 커밋까지 완료 후
+git push origin f 
+깃허브에서 확인해보면 브랜치 목록에 2라는 표시를 볼수있다.
+
+- 풀 리퀘스트로 푸시한 브랜치 병합하기 
+아직 원격 저장소의 파일 목록에는 f 브랜치에서 만들었던 파일이 없다. 푸시한 브랜치는 풀 리궤스트를통해 병합해야 원격 저장소에 반영되기 때문이다. 
+깃허브 사이트에서 브랜치 설명 옆에 있는 New pull request -> create pull request -> 
+Pull requests 클릭하면 등록된 풀 리퀘스트 목록이 나타난다. -> 문제없으면 Merge pull request - > Confirm merge -> 
+브랜치가 병합되면 master 화면에 나타난다. -> 브랜치가 병합된 상태라면 merged 라고 표시된다.  -> 협업할때 보통 작업자마다 브랜치를 따로만들어서 작업 
+중간중간 풀리퀘스트를 보내서 master 브랜치에 병합한다. 그래서 항상 pull 작업을 먼저하는걸 습관화 해야한다. 
+
+---- 깃허브에서 개발자와 소통하기 
+- 깃허브 프로필 관리하기 
+- README 파일 작성하기 (마크다운 방식)
+- 깃허브에 사진올리고 , README 에 사진첨부하기 
+- 깃허브에 개인 블로그 만들기 
+자바스크립트 , CSS 등 따로 WAS가 필요하지 않을정도의 홈페이지는 바로 올려서 주소를 받아, 홈페이지처럼 사용이 가능하다. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
