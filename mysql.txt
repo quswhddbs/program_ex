@@ -1,0 +1,18 @@
+port : 3306
+id : root
+password : 1111
+mysql workbench 에서 instance -> start / stop
+
+- 계정추가
+create user 'zerock' identified by 'zerock'; // 계정 and 비번
+grant all privileges on *.* to 'zerock'; // 모든 데이터베이스의 모든 테이블에 대한 권한 부여(*.* 이 모든 테이블이란 뜻이다.) 
+grant all privileges on DB이름.* to 'zerock'; //  특정 DB에 대한 모든 권한 부여.
+grant select, insert, update on DB이름.* to 'zerock'; // 특정 DB에 대한 특정 권한(select,insert,update) 부여.
+FLUSH PRIVILEGES; // 변경한 권한을 즉시 반영시켜주는 명령어 
+
+mysql workbench 에서 새로운 계정 접속 테스트
+SCHEMAS -> 우클릭 -> Create schma -> book_ex 이름으로 생성 -> charset : UTF-8 설정
+위 계정의 default schema 를 book_ex 로 설정한다.
+
+기본적으로 데이터베이스의 타임존을 설정해 줘야햔다.(root 계정)
+SET GLOBAL time_zone = '+9:00';  
