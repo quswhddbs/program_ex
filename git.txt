@@ -63,7 +63,7 @@ git commit -am "message2" 해본다.
 보통 log 정보에 파일 정보까지는 보이지 않는다. 위와같이 해야한다. 
 
 - 버전 관리에서 제외하기 
-.gitgnore 파일 만들어서 제외할수 있다. 
+.gitignore 파일 만들어서 제외할수 있다. 
 
 - 최근커밋내용 메시지 수정하기 
 git commit --amend 
